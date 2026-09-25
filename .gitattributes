@@ -1,0 +1,12 @@
+# Define o comportamento padrão para todos os arquivos de texto:
+# Converte para LF ao fazer commit no Git, e usa o padrão do SO no checkout.
+* text=auto
+
+# Garante que arquivos de código mantenham sempre LF (recomendado para Node.js / Web)
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+
+# Mantém arquivos binários intocados
+*.png binary
+*.jpg binary
