@@ -1,3 +1,12 @@
+// RESPONSABILIDADE: Lógica completa do temporizador Pomodoro com tipagem TypeScript
+// Este arquivo gerencia:
+// - Alternância entre ciclos de foco (50 min) e pausa (5 min)
+// - Contagem regressiva do tempo com atualização em tempo real
+// - Manipulação de elementos do DOM (display, botões, título da aba)
+// - Eventos de clique dos botões (Iniciar, Pausar, Resetar)
+// - Notificações ao fim de cada ciclo via confirm() e alert()
+// - Sincronização do tempo no título da aba do navegador
+
 (() => {
     type Modo = 'foco' | 'pausa';
 

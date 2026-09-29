@@ -1,3 +1,9 @@
+// RESPONSABILIDADE: Código JavaScript compilado do TypeScript (app.ts)
+// Este arquivo é gerado automaticamente pela transpilação do TypeScript.
+// Contém a mesma lógica do app.ts, mas sem anotações de tipo e em sintaxe
+// JavaScript puro, permitindo sua execução direta no navegador.
+// Para atualizar este arquivo, execute: tsc app.ts
+
 "use strict";
 (() => {
     const TEMPO_FOCO = 50 * 60; // 50 minutos em segundos
