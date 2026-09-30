@@ -1,4 +1,4 @@
-# Timer de Concentração e Pausa (Pomodoro)
+# Resetfy Web - Timer de Concentração e Pausa
 
 Aplicação web em desenvolvimento para auxiliar usuários de computador na prevenção de doenças ocupacionais relacionadas ao uso prolongado de dispositivos digitais.
 

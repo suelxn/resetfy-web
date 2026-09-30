@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# Build output
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.code-workspace
+.DS_Store/.AppleDouble
+.DS_Store/.LSOverride
+
+# OS
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+.jest
+
+# Cache
+.cache/
+.eslintcache
+.stylelintcache
+*.tmp
+.parcel-cache
+
+# Editor
+.editorconfig
+
+# NPM
+npm-shrinkwrap.json
+
+# Misc
+dist-ssr/
+*.local
+pnpm-workspace.yaml
+.history/
