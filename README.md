@@ -1,6 +1,8 @@
 # Timer de Concentração e Pausa (Pomodoro)
 
-Projeto simples de cronômetro para navegador que alterna entre períodos de foco (50 minutos) e pausas curtas para bem-estar (5 minutos), incentivando hábitos como beber água, piscar os olhos e se alongar.
+Aplicação web em desenvolvimento para auxiliar usuários de computador na prevenção de doenças ocupacionais relacionadas ao uso prolongado de dispositivos digitais.
+
+O Resetfy tem como objetivo incentivar pausas durante a jornada de uso do computador, exibindo lembretes, sugsetões de exercícios e orientações para reduzir riscos de problemas como LER/DORT, síndrome do túnel do carpo e fadiga visual.
 
 ---
 

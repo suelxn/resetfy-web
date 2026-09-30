@@ -14,13 +14,39 @@
 </head>
 <body>
 
-    <h1 id="tituloModo">Modo: Foco</h1>
-    
-    <div>
-        <h2 id="timer">50:00</h2>
-        <button id="btnStart">Iniciar</button>
-        <button id="btnPause" disabled>Pausar</button>
-        <button id="btnReset">Resetar</button>
+    <!-- Tela de Foco -->
+    <div id="telaFoco">
+        <h1 id="tituloModo">Modo: Foco</h1>
+        <div>
+            <h2 id="timer">50:00</h2>
+            <button id="btnStart">Iniciar</button>
+            <button id="btnPause" disabled>Pausar</button>
+            <button id="btnReset">Resetar</button>
+        </div>
+    </div>
+
+    <!-- Tela de Pausa -->
+    <div id="telaPausa" style="display: none; text-align: center;">
+        <h2>⏸️ Hora de fazer uma pausa!</h2>
+        <p style="font-size: 18px; margin: 20px 0;">
+            - Beba água<br>
+            - Pisque os olhos<br>
+            - Alongue o corpo
+        </p>
+        <h3 id="timerPausa">05:00</h3>
+        <button id="btnEncerrarPausa" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background: #f44336; color: white; border: none; border-radius: 5px;">Encerrar Pausa</button>
+    </div>
+
+    <!-- Modal de Fim de Ciclo -->
+    <div id="modalCicloEncerrado" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2>🎯 Ciclo encerrado!</h2>
+            <p style="margin: 20px 0; font-size: 16px;">Selecione a opção que deseja realizar agora</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="btnFazerPausa" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px;">Fazer a Pausa</button>
+                <button id="btnPularPausa" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background: #FF9800; color: white; border: none; border-radius: 5px;">Pular</button>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>

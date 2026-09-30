@@ -22,18 +22,26 @@
     let btnStart: HTMLButtonElement | null = null;
     let btnPause: HTMLButtonElement | null = null;
     let btnReset: HTMLButtonElement | null = null;
+    let modalCicloEncerrado: HTMLElement | null = null;
+    let btnFazerPausa: HTMLButtonElement | null = null;
+    let btnPularPausa: HTMLButtonElement | null = null;
+    let telaPausa: HTMLElement | null = null;
+    let timerPausaDisplay: HTMLElement | null = null;
+    let btnEncerrarPausa: HTMLButtonElement | null = null;
+    let telaFoco: HTMLElement | null = null;
 
     function atualizarTela(): void {
         const minutos: number = Math.floor(tempoRestante / 60);
         const segundos: number = tempoRestante % 60;
-        
+
         const minFormatado: string = String(minutos).padStart(2, '0');
         const segFormatado: string = String(segundos).padStart(2, '0');
         const tempoTexto: string = `${minFormatado}:${segFormatado}`;
-        
+
         const nomeModo: string = modoAtual === 'foco' ? 'Foco' : 'Pausa';
 
         if (timerDisplay) timerDisplay.innerText = tempoTexto;
+        if (timerPausaDisplay) timerPausaDisplay.innerText = tempoTexto;
         if (tituloModoDisplay) tituloModoDisplay.innerText = `Modo: ${nomeModo}`;
         document.title = `${tempoTexto} - ${nomeModo}`;
     }
@@ -45,6 +53,30 @@
         }
         if (btnStart) btnStart.disabled = false;
         if (btnPause) btnPause.disabled = true;
+    }
+
+    function exibirModalCicloEncerrado(): void {
+        if (telaFoco) telaFoco.style.display = 'none';
+        if (telaPausa) telaPausa.style.display = 'none';
+        if (modalCicloEncerrado) {
+            (modalCicloEncerrado as HTMLElement).style.display = 'flex';
+        }
+    }
+
+    function fecharModalCicloEncerrado(): void {
+        if (modalCicloEncerrado) {
+            (modalCicloEncerrado as HTMLElement).style.display = 'none';
+        }
+    }
+
+    function exibirTelaPausa(): void {
+        if (telaFoco) telaFoco.style.display = 'none';
+        if (telaPausa) telaPausa.style.display = 'block';
+    }
+
+    function exibirTelaFoco(): void {
+        if (telaPausa) telaPausa.style.display = 'none';
+        if (telaFoco) telaFoco.style.display = 'block';
     }
 
     function iniciarTimer(): void {
@@ -62,32 +94,13 @@
                 pararTimer();
 
                 if (modoAtual === 'foco') {
-                    const querFazerPausa: boolean = confirm(
-                        "Hora de fazer uma pausa!\n\n" +
-                        "- Beba água\n" +
-                        "- Pisque os olhos\n" +
-                        "- Alongue o corpo\n\n" +
-                        "Clique em OK para 'Fazer a pausa' ou CANCELAR para 'Pular a pausa'."
-                    );
-
-                    if (querFazerPausa) {
-                        modoAtual = 'pausa';
-                        tempoRestante = TEMPO_PAUSA;
-                        atualizarTela();
-                        iniciarTimer();
-                    } else {
-                        modoAtual = 'foco';
-                        tempoRestante = TEMPO_FOCO;
-                        atualizarTela();
-                        iniciarTimer();
-                    }
-
+                    exibirModalCicloEncerrado();
                 } else {
-                    alert("A pausa acabou! Clique em Iniciar quando estiver pronto para os 50 minutos de foco.");
-                    
+                    exibirTelaFoco();
                     modoAtual = 'foco';
                     tempoRestante = TEMPO_FOCO;
                     atualizarTela();
+                    iniciarTimer();
                 }
             }
         }, 1000);
@@ -111,10 +124,44 @@
         btnStart = document.getElementById('btnStart') as HTMLButtonElement;
         btnPause = document.getElementById('btnPause') as HTMLButtonElement;
         btnReset = document.getElementById('btnReset') as HTMLButtonElement;
+        modalCicloEncerrado = document.getElementById('modalCicloEncerrado');
+        btnFazerPausa = document.getElementById('btnFazerPausa') as HTMLButtonElement;
+        btnPularPausa = document.getElementById('btnPularPausa') as HTMLButtonElement;
+        telaPausa = document.getElementById('telaPausa');
+        timerPausaDisplay = document.getElementById('timerPausa');
+        btnEncerrarPausa = document.getElementById('btnEncerrarPausa') as HTMLButtonElement;
+        telaFoco = document.getElementById('telaFoco');
 
         btnStart?.addEventListener('click', iniciarTimer);
         btnPause?.addEventListener('click', pausarTimer);
         btnReset?.addEventListener('click', resetarTimer);
+
+        btnFazerPausa?.addEventListener('click', () => {
+            fecharModalCicloEncerrado();
+            exibirTelaPausa();
+            modoAtual = 'pausa';
+            tempoRestante = TEMPO_PAUSA;
+            atualizarTela();
+            iniciarTimer();
+        });
+
+        btnPularPausa?.addEventListener('click', () => {
+            fecharModalCicloEncerrado();
+            exibirTelaFoco();
+            modoAtual = 'foco';
+            tempoRestante = TEMPO_FOCO;
+            atualizarTela();
+            iniciarTimer();
+        });
+
+        btnEncerrarPausa?.addEventListener('click', () => {
+            pararTimer();
+            exibirTelaFoco();
+            modoAtual = 'foco';
+            tempoRestante = TEMPO_FOCO;
+            atualizarTela();
+            iniciarTimer();
+        });
 
         atualizarTela();
     });
