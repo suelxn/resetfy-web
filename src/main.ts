@@ -25,7 +25,7 @@ mainContent.className = 'flex flex-col flex-1 items-center justify-center gap-[8
 
 // Top: Mode Indicator + Badge lado a lado (mesma largura do Timer)
 const topContainer = document.createElement('div');
-topContainer.className = 'flex items-center justify-between w-70';
+topContainer.className = 'flex items-center justify-between w-70 align-middle';
 topContainer.appendChild(createModeIndicator());
 topContainer.appendChild(createBadge({ text: 'Ciclo 1 de ∞' }));
 topContainer.children[1].id = 'cycle-info';
@@ -88,8 +88,8 @@ function atualizarDisplay(state: any) {
   timeDisplay.textContent = formatarTempo(state.tempoRestante);
   modeIndicator.textContent = state.modo === 'foco' ? 'FOCO' : 'PAUSA';
   modeIndicator.className = state.modo === 'foco'
-    ? 'text-lg font-semibold text-pink-300 mb-4'
-    : 'text-lg font-semibold text-blue-300 mb-4';
+    ? 'text-lg font-semibold text-pink-300'
+    : 'text-lg font-semibold text-blue-300';
   cycleInfo.textContent = `Ciclo ${state.ciclo} de ∞`;
 
   // Mostra modal de sugestões ao entrar em modo pausa

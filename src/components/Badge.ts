@@ -9,7 +9,9 @@ export interface BadgeConfig {
 export function createBadge(config: BadgeConfig): HTMLElement {
   const badge = document.createElement('span');
   badge.textContent = config.text;
-  badge.className = 'inline-block px-2 py-1 rounded-full font-medium text-sm bg-pink-400/50 text-white';
+  badge.className = 'inline-block px-2 py-1 rounded-full font-medium text-sm';
+  badge.style.backgroundColor = 'var(--color-badge-bg)';
+  badge.style.color = 'var(--color-badge-text)';
 
   return badge;
 }

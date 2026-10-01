@@ -7,7 +7,8 @@ import { createSwitch } from './Switch';
 
 export function createHeader(): HTMLElement {
   const header = document.createElement('header');
-  header.className = 'bg-[#121118] shadow-md';
+  header.className = 'shadow-md';
+  header.style.backgroundColor = 'var(--color-background)';
 
   const container = document.createElement('div');
   container.className = 'max-w-7xl mx-auto px-4 py-4 flex items-center justify-between';

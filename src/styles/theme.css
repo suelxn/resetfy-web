@@ -1,0 +1,33 @@
+/* Tema Dark (padrão) */
+:root {
+  --color-primary: #F01A75;
+  --color-primary-light: #FF428E;
+  --color-primary-lighter: #FF70A9;
+  --color-background: #1D1C24;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #A0A0A0;
+  --color-border: #333333;
+  --color-switch-inactive: #4B5563;
+  --color-switch-active: #FCD34D;
+  --color-mode-indicator: #F01A75;
+  --color-timer: #F01A75;
+  --color-badge-bg: #F01A75;
+  --color-badge-text: #FFFFFF;
+}
+
+/* Tema Light */
+[data-theme="light"] {
+  --color-primary: #FF70A9;
+  --color-primary-light: #FF70A9;
+  --color-primary-lighter: #FFB3D9;
+  --color-background: #FFFFFF;
+  --color-text: #000000;
+  --color-text-secondary: #666666;
+  --color-border: #EEEEEE;
+  --color-switch-inactive: #D1D5DB;
+  --color-switch-active: #FCD34D;
+  --color-mode-indicator: #F01A75;
+  --color-timer: #F01A75;
+  --color-badge-bg: #F01A75;
+  --color-badge-text: #FFFFFF;
+}
