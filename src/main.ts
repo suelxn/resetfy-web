@@ -45,11 +45,11 @@ let indiceAtual = 0;
 
 // Conecta eventos dos botões à lógica do timer
 function inicializarEventos() {
-  const playBtn = document.getElementById('play-btn')!;
-  const pauseBtn = document.getElementById('pause-btn')!;
-  const resetBtn = document.getElementById('reset-btn')!;
-  const nextSuggestionBtn = document.getElementById('next-suggestion-btn')!;
-  const okSuggestionBtn = document.getElementById('ok-suggestion-btn')!;
+  const playBtn = document.getElementById('play-btn')! as HTMLButtonElement;
+  const pauseBtn = document.getElementById('pause-btn')! as HTMLButtonElement;
+  const resetBtn = document.getElementById('reset-btn')! as HTMLButtonElement;
+  const nextSuggestionBtn = document.getElementById('next-suggestion-btn')! as HTMLButtonElement;
+  const okSuggestionBtn = document.getElementById('ok-suggestion-btn')! as HTMLButtonElement;
 
   playBtn.addEventListener('click', () => {
     iniciar();
