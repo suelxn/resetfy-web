@@ -1,13 +1,19 @@
 // Objetivo: Exibir indicador de modo (Foco/Pausa)
 // - Mostra o modo atual em texto
-// - Será atualizado pela lógica do state/timerState.ts
+// - A cor muda entre text-brand-default (foco) e text-mode-break (pausa)
 
-export function createModeIndicator(): HTMLElement {
-  const modeIndicator = document.createElement('div');
-  modeIndicator.id = 'mode-indicator';
-  modeIndicator.className = 'text-lg font-semibold px-2';
-  modeIndicator.textContent = 'FOCO';
-  modeIndicator.style.color = 'var(--color-mode-indicator)';
+import { createElement, type ReactElement } from 'react';
+import type { Modo } from '../types';
 
-  return modeIndicator;
+export function createModeIndicator(modo: Modo): ReactElement {
+  const isFoco = modo === 'foco';
+
+  return createElement(
+    'div',
+    {
+      id: 'mode-indicator',
+      className: ['px-2 text-lg font-bold text-content-xstrong', isFoco ? 'text-brand-default' : 'text-mode-break'].join(' '),
+    },
+    isFoco ? 'FOCO' : 'PAUSA',
+  );
 }

@@ -4,7 +4,8 @@
 // - Notifica componentes quando estado muda (padrão Observer)
 
 import { TEMPOS } from '../config/constants';
-import type { Modo, TimerState } from '../types/index';
+import type { TimerState } from '../types/index';
+import { useEffect, useState } from 'react';
 
 let state: TimerState = {
   tempoRestante: TEMPOS.FOCO,
@@ -25,7 +26,9 @@ function notificar() {
 // Subscreve para receber atualizações de estado
 export function subscribe(callback: (state: TimerState) => void) {
   subscribers.add(callback);
-  return () => subscribers.delete(callback);
+  return () => {
+    subscribers.delete(callback);
+  };
 }
 
 // Inicia o cronômetro
@@ -81,4 +84,13 @@ function alternarModo() {
 // Retorna estado atual
 export function getState(): TimerState {
   return { ...state };
+}
+
+// Hook para componentes React: devolve o estado atual e re-renderiza a cada notificação
+export function useTimer(): TimerState {
+  const [timer, setTimer] = useState<TimerState>(getState);
+
+  useEffect(() => subscribe(setTimer), []);
+
+  return timer;
 }

@@ -2,16 +2,20 @@
 // - Exibe status/tags com estilo único padronizado
 // - Usado para: ciclo, tags, indicadores
 
+import { createElement, type ReactElement } from 'react';
+
 export interface BadgeConfig {
   text: string;
+  id?: string;
 }
 
-export function createBadge(config: BadgeConfig): HTMLElement {
-  const badge = document.createElement('span');
-  badge.textContent = config.text;
-  badge.className = 'inline-block px-2 py-1 rounded-full font-medium text-sm';
-  badge.style.backgroundColor = 'var(--color-badge-bg)';
-  badge.style.color = 'var(--color-badge-text)';
-
-  return badge;
+export function createBadge(config: BadgeConfig): ReactElement {
+  return createElement(
+    'span',
+    {
+      id: config.id,
+      className: 'inline-block rounded-full bg-brand-default/50 px-2 py-1 text-sm font-medium text-neutral-0',
+    },
+    config.text,
+  );
 }

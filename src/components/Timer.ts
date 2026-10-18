@@ -1,13 +1,13 @@
 // Objetivo: Exibir APENAS o cronômetro (MM:SS)
-// - Mostra tempo em formato MM:SS
-// - Será atualizado pela lógica do state/timerState.ts
+// - Recebe o tempo restante em segundos e mostra no formato MM:SS
 
-export function createTimer(): HTMLElement {
-  const timeDisplay = document.createElement('div');
-  timeDisplay.id = 'time-display';
-  timeDisplay.className = 'text-8xl font-bold font-mono';
-  timeDisplay.textContent = '50:00';
-  timeDisplay.style.color = 'var(--color-timer)';
+import { createElement, type ReactElement } from 'react';
+import { formatarTempo } from '../utils/formatTime';
 
-  return timeDisplay;
+export function createTimer(segundos: number): ReactElement {
+  return createElement(
+    'div',
+    { id: 'time-display', className: 'font-mono text-8xl font-bold text-brand-default' },
+    formatarTempo(segundos),
+  );
 }

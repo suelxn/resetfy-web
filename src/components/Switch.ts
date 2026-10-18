@@ -1,68 +1,47 @@
-// Objetivo: Componente de switch para alternar temas (claro/escuro)
-// - Exibe indicação visual do tema ativo
-// - Permite toggle entre light e dark
-// - Dispara evento ao mudar tema
+// Objetivo: Switch para alternar entre tema escuro e claro
+// - Trilho e círculo usam surface-switch e surface-switch-thumb (styles/theme.css)
+// - Ícone no lado livre do trilho: bedtime (escuro) ou light_mode (claro)
+// - Lê o tema salvo e grava a escolha (ver utils/theme.ts)
+// - Acessível: role="switch" com aria-checked (ligado = tema claro)
 
-export interface SwitchConfig {
-  onChange?: (isDark: boolean) => void;
-}
+import { createElement, useState, type ReactElement } from 'react';
+import { applyTheme, getSavedTheme, type Theme } from '../utils/theme';
+import bedtimeIcon from '../assets/bedtime.svg';
+import lightModeIcon from '../assets/light_mode.svg';
 
-export function createSwitch(config?: SwitchConfig): HTMLElement {
-  const container = document.createElement('div');
-  container.className = 'flex items-center gap-3';
+export function Switch(): ReactElement {
+  const [theme, setTheme] = useState<Theme>(getSavedTheme);
+  const isLight = theme === 'light';
 
-  // Label Dark
-  const labelDark = document.createElement('span');
-  labelDark.textContent = '🌙';
-  labelDark.className = 'text-xl cursor-pointer';
-
-  // Switch button
-  const switchBtn = document.createElement('button');
-  switchBtn.id = 'theme-switch';
-  switchBtn.className = 'relative inline-flex items-center w-14 h-7 rounded-full transition-colors bg-pink-500 hover:bg-pink-600';
-  switchBtn.setAttribute('aria-label', 'Alternar tema');
-
-  // Toggle circle
-  const toggle = document.createElement('div');
-  toggle.className = 'absolute left-1 w-5 h-5 bg-white rounded-full transition-transform';
-
-  switchBtn.appendChild(toggle);
-
-  // Label Light
-  const labelLight = document.createElement('span');
-  labelLight.textContent = '☀️';
-  labelLight.className = 'text-xl cursor-pointer';
-
-  // State
-  let isDark: boolean = localStorage.getItem('theme') === 'dark' || true;
-  updateSwitch();
-
-  // Event listener
-  switchBtn.addEventListener('click', () => {
-    isDark = !isDark;
-    const theme = isDark ? 'dark' : 'light';
-    localStorage.setItem('theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-    updateSwitch();
-    config?.onChange?.(isDark);
-  });
-
-  function updateSwitch() {
-    const theme = isDark ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-
-    if (isDark) {
-      toggle.classList.remove('translate-x-7');
-      switchBtn.style.backgroundColor = 'var(--color-switch-inactive)';
-    } else {
-      toggle.classList.add('translate-x-7');
-      switchBtn.style.backgroundColor = 'var(--color-switch-active)';
-    }
+  function alternarTema() {
+    const proximo: Theme = theme === 'dark' ? 'light' : 'dark';
+    applyTheme(proximo);
+    setTheme(proximo);
   }
 
-  container.appendChild(labelDark);
-  container.appendChild(switchBtn);
-  container.appendChild(labelLight);
-
-  return container;
+  return createElement(
+    'div',
+    { className: 'flex items-center' },
+    createElement(
+      'button',
+      {
+        id: 'theme-switch',
+        type: 'button',
+        role: 'switch',
+        'aria-label': 'Tema claro',
+        'aria-checked': isLight,
+        onClick: alternarTema,
+        className: 'relative inline-flex h-8 w-16 items-center rounded-full bg-surface-switch transition-colors',
+      },
+      createElement('img', {
+        src: isLight ? lightModeIcon : bedtimeIcon,
+        alt: '',
+        'aria-hidden': true,
+        className: ['absolute top-1/2 h-5 w-5 -translate-y-1/2', isLight ? 'left-2' : 'right-2'].join(' '),
+      }),
+      createElement('span', {
+        className: ['absolute left-2 h-5 w-5 rounded-full bg-surface-switch-thumb transition-transform', isLight ? 'translate-x-7' : ''].join(' ').trim(),
+      }),
+    ),
+  );
 }

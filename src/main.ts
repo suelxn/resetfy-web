@@ -1,8 +1,10 @@
 // Objetivo: Orquestrador principal da aplicação
 // - Importa estilos e componentes
 // - Monta a estrutura visual na página
-// - Inicializa listeners de eventos e lógica do timer
+// - Conecta botões e modal à lógica do timer
 
+import { StrictMode, createElement, useEffect, useState, type ReactElement } from 'react';
+import { createRoot } from 'react-dom/client';
 import './styles/main.css';
 import { createLayout } from './components/Layout';
 import { createHeader } from './components/Header';
@@ -11,120 +13,60 @@ import { createBadge } from './components/Badge';
 import { createTimer } from './components/Timer';
 import { createControls } from './components/Controls';
 import { createSuggestionsModal } from './components/SuggestionsModal';
-import { subscribe, iniciar, pausar, resetar, getState } from './state/timerState';
+import { useTimer, iniciar, pausar, resetar } from './state/timerState';
 import { formatarTempo } from './utils/formatTime';
+import { getElement } from './utils/dom';
 import { suggestions } from './config/suggestions';
 
-// Renderiza a estrutura visual completa com Layout global
-const app = document.getElementById('app')!;
-const layout = createLayout();
+function App(): ReactElement {
+  const state = useTimer();
+  // Índice da sugestão exibida no modal
+  const [indiceAtual, setIndiceAtual] = useState(0);
+  const [modalAberto, setModalAberto] = useState(false);
 
-// Main content: Mode + Badge + Timer + Controls
-const mainContent = document.createElement('div');
-mainContent.className = 'flex flex-col flex-1 items-center justify-center gap-[80px]';
+  // Atualiza o título da aba sempre que o tempo ou o modo mudam
+  useEffect(() => {
+    document.title = `${formatarTempo(state.tempoRestante)} - ${state.modo.toUpperCase()} - RESETFY`;
+  }, [state.tempoRestante, state.modo]);
 
-// Top: Mode Indicator + Badge lado a lado (mesma largura do Timer)
-const topContainer = document.createElement('div');
-topContainer.className = 'flex items-center justify-between w-70 align-middle';
-topContainer.appendChild(createModeIndicator());
-topContainer.appendChild(createBadge({ text: 'Ciclo 1 de ∞' }));
-topContainer.children[1].id = 'cycle-info';
+  // Abre o modal de sugestões ao entrar em pausa
+  useEffect(() => {
+    if (state.modo === 'pausa' && !state.ativo) {
+      setIndiceAtual(0);
+      setModalAberto(true);
+    }
+  }, [state.modo, state.ativo]);
 
-mainContent.appendChild(topContainer);
-mainContent.appendChild(createTimer());
-mainContent.appendChild(createControls());
-
-// Monta layout: Header + Main + Modal
-layout.appendChild(createHeader());
-layout.appendChild(mainContent);
-layout.appendChild(createSuggestionsModal());
-app.appendChild(layout);
-
-// Índice da sugestão atual
-let indiceAtual = 0;
-
-// Conecta eventos dos botões à lógica do timer
-function inicializarEventos() {
-  const playBtn = document.getElementById('play-btn')! as HTMLButtonElement;
-  const pauseBtn = document.getElementById('pause-btn')! as HTMLButtonElement;
-  const resetBtn = document.getElementById('reset-btn')! as HTMLButtonElement;
-  const nextSuggestionBtn = document.getElementById('next-suggestion-btn')! as HTMLButtonElement;
-  const okSuggestionBtn = document.getElementById('ok-suggestion-btn')! as HTMLButtonElement;
-
-  playBtn.addEventListener('click', () => {
-    iniciar();
-    playBtn.disabled = true;
-    pauseBtn.disabled = false;
-  });
-
-  pauseBtn.addEventListener('click', () => {
-    pausar();
-    playBtn.disabled = false;
-    pauseBtn.disabled = true;
-  });
-
-  resetBtn.addEventListener('click', () => {
+  function encerrar() {
     resetar();
-    indiceAtual = 0;
-    playBtn.disabled = false;
-    pauseBtn.disabled = true;
-    fecharModal();
-  });
-
-  nextSuggestionBtn.addEventListener('click', () => {
-    indiceAtual = (indiceAtual + 1) % suggestions.length;
-    atualizarSugestao();
-  });
-
-  okSuggestionBtn.addEventListener('click', fecharModal);
-}
-
-// Atualiza display do cronômetro quando estado muda
-function atualizarDisplay(state: any) {
-  const timeDisplay = document.getElementById('time-display')!;
-  const modeIndicator = document.getElementById('mode-indicator')!;
-  const cycleInfo = document.getElementById('cycle-info')!;
-
-  timeDisplay.textContent = formatarTempo(state.tempoRestante);
-  modeIndicator.textContent = state.modo === 'foco' ? 'FOCO' : 'PAUSA';
-  modeIndicator.className = state.modo === 'foco'
-    ? 'text-lg font-semibold text-pink-300'
-    : 'text-lg font-semibold text-blue-300';
-  cycleInfo.textContent = `Ciclo ${state.ciclo} de ∞`;
-
-  // Mostra modal de sugestões ao entrar em modo pausa
-  if (state.modo === 'pausa' && !state.ativo) {
-    indiceAtual = 0;
-    atualizarSugestao();
-    abrirModal();
+    setIndiceAtual(0);
+    setModalAberto(false);
   }
 
-  // Atualiza título da aba
-  document.title = `${formatarTempo(state.tempoRestante)} - ${state.modo.toUpperCase()} - RESETFY`;
+  function proximaSugestao() {
+    setIndiceAtual(indice => (indice + 1) % suggestions.length);
+  }
+
+  return createLayout(
+    createHeader(),
+    createElement(
+      'main',
+      { className: 'flex flex-1 flex-col items-center justify-center gap-20' },
+      createElement(
+        'div',
+        { className: 'flex w-70 items-center justify-between' },
+        createModeIndicator(state.modo),
+        createBadge({ id: 'cycle-info', text: `Ciclo ${state.ciclo}` }),
+      ),
+      createTimer(state.tempoRestante),
+      createControls({ ativo: state.ativo, onIniciar: iniciar, onPausar: pausar, onEncerrar: encerrar }),
+    ),
+    modalAberto && createSuggestionsModal({
+      sugestao: suggestions[indiceAtual],
+      onProxima: proximaSugestao,
+      onFechar: () => setModalAberto(false),
+    }),
+  );
 }
 
-// Abre modal de sugestões
-function abrirModal() {
-  const modal = document.getElementById('suggestions-modal')!;
-  modal.classList.remove('hidden');
-}
-
-// Fecha modal de sugestões
-function fecharModal() {
-  const modal = document.getElementById('suggestions-modal')!;
-  modal.classList.add('hidden');
-}
-
-// Atualiza sugestão exibida no modal
-function atualizarSugestao() {
-  const sugestao = suggestions[indiceAtual];
-  const suggestionText = document.getElementById('suggestion-text')!;
-  suggestionText.innerHTML = `<strong>${sugestao.titulo}</strong><br/><br/>${sugestao.descricao}`;
-}
-
-// Subscreve para receber atualizações do timer
-subscribe(atualizarDisplay);
-
-// Inicializa a aplicação
-inicializarEventos();
-atualizarDisplay(getState());
+createRoot(getElement('app')).render(createElement(StrictMode, null, createElement(App)));

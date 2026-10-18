@@ -17,6 +17,7 @@ O Resetfy tem como objetivo incentivar pausas durante a jornada de uso do comput
 
 ## Tecnologias Utilizadas
 
+* **React 19**: Interface em componentes de função com hooks
 * **Vite**: Build tool moderno e rápido
 * **TypeScript**: Lógica com tipagem estática
 * **Tailwind CSS**: Estilização com CSS utilities
@@ -29,31 +30,40 @@ O Resetfy tem como objetivo incentivar pausas durante a jornada de uso do comput
 
 ```
 src/
-├── components/          # Componentes reutilizáveis
-│   ├── Header.ts       # Cabeçalho com logo e switch de tema
-│   ├── Timer.ts        # Display do cronômetro (MM:SS)
-│   ├── ModeIndicator.ts # Indicador de modo (Foco/Pausa)
-│   ├── Badge.ts        # Componente de badge reutilizável
-│   ├── Button.ts       # Componente de botão customizável
-│   ├── Controls.ts     # Botões de controle (Play, Pause, Reset)
-│   ├── Switch.ts       # Switch de tema claro/escuro
-│   ├── SuggestionsModal.ts # Modal com sugestões de exercício
-│   └── Layout.ts       # Container global com estilos globais
-├── config/             # Configurações e constantes
-│   ├── theme.ts        # Configuração de temas
-│   ├── theme.css       # Variáveis CSS dos temas
-│   ├── constants.ts    # Tempos (foco: 50min, pausa: 5min)
-│   ├── suggestions.ts  # Lista de sugestões de exercícios
-│   └── colors.ts       # Paleta de cores da marca
-├── state/              # Gerenciamento de estado
-│   └── timerState.ts   # Lógica central do timer (iniciar, pausar, resetar)
-├── types/              # Definições de tipos TypeScript
-│   └── index.ts        # Interfaces (Modo, TimerState, Suggestion)
-├── utils/              # Funções utilitárias
-│   └── formatTime.ts   # Converte segundos em MM:SS
-├── styles/             # Estilos globais
-│   └── main.css        # Importações de CSS
-└── main.ts             # Orquestrador principal da aplicação
+├── assets/                  # Ícones SVG usados na interface
+│   ├── bedtime.svg          # Ícone do tema escuro
+│   ├── close.svg            # Ícone de fechar
+│   ├── light_mode.svg       # Ícone do tema claro
+│   ├── logo-suelendias.svg  # Logo
+│   └── setting.svg          # Ícone de configurações
+├── components/              # Componentes de interface
+│   ├── Badge.ts             # Badge reutilizável (ex.: ciclo atual)
+│   ├── Button.ts            # Botão com texto e variantes
+│   ├── Controls.ts          # Botões de controle (Iniciar, Pausar, Encerrar)
+│   ├── Header.ts            # Cabeçalho com logo, título e switch de tema
+│   ├── IconButton.ts        # Botão só com ícone (aceita apenas os ícones de assets/)
+│   ├── Layout.ts            # Container global da aplicação
+│   ├── ModeIndicator.ts     # Indicador de modo (Foco/Pausa)
+│   ├── SuggestionsModal.ts  # Modal com sugestões de exercício na pausa
+│   ├── Switch.ts            # Switch de tema claro/escuro (com estado)
+│   └── Timer.ts             # Display do cronômetro (MM:SS)
+├── config/                  # Configurações e constantes
+│   ├── constants.ts         # Tempos (foco: 50min, pausa: 5min)
+│   └── suggestions.ts       # Lista de sugestões de exercícios
+├── state/                   # Gerenciamento de estado
+│   └── timerState.ts        # Lógica do timer e hook useTimer
+├── styles/                  # Estilos globais
+│   ├── colors.css           # Paleta de cores da marca
+│   ├── main.css             # Importações de CSS
+│   └── theme.css            # Variáveis CSS dos temas (light/dark)
+├── types/                   # Definições de tipos TypeScript
+│   └── index.ts             # Interfaces (Modo, TimerState, Suggestion)
+├── utils/                   # Funções utilitárias
+│   ├── dom.ts               # Acesso seguro a elementos do DOM (getElement)
+│   ├── formatTime.ts        # Converte segundos em MM:SS
+│   └── theme.ts             # Lê, salva e aplica o tema
+├── vite-env.d.ts            # Tipos do Vite (imports de SVG)
+└── main.ts                  # Orquestrador: componente App e montagem na página
 ```
 
 
@@ -97,10 +107,10 @@ npm run preview
 
 ## Arquitetura
 
-### Padrão de Estado (Observer)
-O `timerState.ts` implementa um padrão Observer onde componentes se inscrevem para mudanças de estado:
+### Padrão de Estado (Observer + hook)
+O `timerState.ts` implementa um padrão Observer. O hook `useTimer` se inscreve nele e faz o componente re-renderizar a cada mudança:
 ```typescript
-subscribe(atualizarDisplay);  // Recebe atualizações em tempo real
+const state = useTimer();  // Recebe atualizações em tempo real
 ```
 
 ### Sistema de Temas
@@ -111,8 +121,9 @@ Utiliza **CSS Custom Properties** para temas dinâmicos:
 Variáveis configuráveis em `src/styles/theme.css`
 
 ### Separação de Responsabilidades
-- **Components**: Apenas renderizam elementos DOM
-- **State**: Gerencia lógica do timer
+- **Components**: Funções que recebem dados por props e devolvem elementos React (sem estado global)
+- **State**: Gerencia lógica do timer e expõe o hook `useTimer`
+- **Main**: Componente `App` que liga o estado aos componentes
 - **Config**: Centraliza configurações e dados
 - **Utils**: Funções reutilizáveis
 - **Types**: Interfaces TypeScript

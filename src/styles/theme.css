@@ -1,33 +1,164 @@
-/* Tema Dark (padrão) */
-:root {
-  --color-primary: #F01A75;
-  --color-primary-light: #FF428E;
-  --color-primary-lighter: #FF70A9;
-  --color-background: #1D1C24;
-  --color-text: #FFFFFF;
-  --color-text-secondary: #A0A0A0;
-  --color-border: #333333;
-  --color-switch-inactive: #4B5563;
-  --color-switch-active: #FCD34D;
-  --color-mode-indicator: #F01A75;
-  --color-timer: #F01A75;
-  --color-badge-bg: #F01A75;
-  --color-badge-text: #FFFFFF;
+/*
+ * Tokens semânticos de tema (claro/escuro), no padrão shadcn/ui.
+ *
+ * Cada token aponta para uma cor primitiva de colors.css. Trocar o tema
+ * só muda qual primitiva cada papel usa; as classes dos componentes não mudam.
+ *
+ * Fundos:
+ *   bg-background-global  → SOMENTE o fundo total da aplicação (define o tema)
+ *   bg-surface-*          → fundo de qualquer outro componente (card, botão, header...)
+ *
+ * Padrão de nomes: papel-nível (subtle, default, strong, xstrong).
+ *   bg-surface-brand text-neutral-0          → botão principal
+ *   bg-surface-default text-content-strong   → cartão, modal
+ *   bg-background-global text-content-xstrong → página
+ *   border-border-default, ring-focus-ring-default → bordas e foco
+ *
+ * Variantes que funcionam:
+ *   hover:bg-surface-brand/80            opacidade (qualquer %)
+ *   dark:bg-surface-default              só no tema escuro (ativado pelo data-theme)
+ *   aria-expanded:bg-surface-subtle      estado de atributo ARIA
+ *   focus-visible:ring-focus-ring-default teclado/foco
+ *
+ * Cores primitivas (pink-500, neutral-300...) continuam disponíveis e fixas.
+ */
+
+/* Tema escuro (padrão) */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Background Global: fundo total da aplicação (único uso permitido) */
+  --background-global: var(--color-dark);
+
+  /* Surface (Fundo de qualquer componente: cards, botões, inputs, header) */
+  --surface-subtle: var(--color-neutral-800);
+  --surface-default: var(--color-neutral-700);
+  --surface-strong: var(--color-neutral-600);
+  --surface-brand: var(--color-pink-500);
+
+  /* Content (Textos, ícones e elementos de conteúdo) */
+  --content-subtle: var(--color-neutral-400);
+  --content-default: var(--color-neutral-300);
+  --content-strong: var(--color-neutral-100);
+  --content-xstrong: var(--color-neutral-0);
+  --content-black: var(--color-neutral-900);
+  --content-white: var(--color-white-0);
+
+  /* Border (Linhas divisórias, bordas de inputs e containers) */
+  --border-subtle: var(--color-neutral-800);
+  --border-default: var(--color-neutral-700);
+  --border-strong: var(--color-neutral-600);
+
+  /* Brand (Identidade visual da marca) */
+  --brand-subtle: var(--color-pink-200);
+  --brand-default: var(--color-pink-300);
+  --brand-strong: var(--color-pink-400);
+
+  /* Focus Ring & Overlay (Estados de acessibilidade e camadas) */
+  --focus-ring-default: var(--color-pink-400);
+  --focus-ring-strong: var(--color-pink-300);
+
+  --overlay-default: rgba(0, 0, 0, 0.5);
+  --overlay-strong: rgba(0, 0, 0, 0.8);
+
+  /* Tokens específicos do Timer (Resetfy) mapeados no novo padrão */
+  --mode-break: var(--color-sky-300);
+  --surface-switch: var(--color-sky-900);
+  --surface-switch-thumb: var(--color-neutral-0);
 }
 
-/* Tema Light */
+/* Tema claro */
 [data-theme="light"] {
-  --color-primary: #FF70A9;
-  --color-primary-light: #FF70A9;
-  --color-primary-lighter: #FFB3D9;
-  --color-background: #FFFFFF;
-  --color-text: #000000;
-  --color-text-secondary: #666666;
-  --color-border: #EEEEEE;
-  --color-switch-inactive: #D1D5DB;
-  --color-switch-active: #FCD34D;
-  --color-mode-indicator: #F01A75;
-  --color-timer: #F01A75;
-  --color-badge-bg: #F01A75;
-  --color-badge-text: #FFFFFF;
+  color-scheme: light;
+
+  /* Background Global: fundo total da aplicação (único uso permitido) */
+  --background-global: var(--color-light);
+
+  /* Surface (Fundo de qualquer componente: cards, botões, inputs, header) */
+  --surface-subtle: var(--color-neutral-100);
+  --surface-default: var(--color-neutral-0);
+  --surface-strong: var(--color-neutral-200);
+  --surface-brand: var(--color-pink-600);
+
+  /* Content (Textos e ícones escuros para legibilidade) */
+  --content-subtle: var(--color-neutral-500);
+  --content-default: var(--color-neutral-700);
+  --content-strong: var(--color-neutral-800);
+  --content-xstrong: var(--color-neutral-900);
+  --content-black: var(--color-neutral-900);
+  --content-white: var(--color-white-0);
+
+  /* Border (Linhas divisórias e contornos em tons de cinza claro) */
+  --border-subtle: var(--color-neutral-100);
+  --border-default: var(--color-neutral-200);
+  --border-strong: var(--color-neutral-300);
+
+  /* Brand (Manutenção da identidade visual no tema claro) */
+  --brand-subtle: var(--color-pink-200);
+  --brand-default: var(--color-pink-300);
+  --brand-strong: var(--color-pink-400);
+
+  /* Focus Ring & Overlay */
+  --focus-ring-default: var(--color-pink-500);
+  --focus-ring-strong: var(--color-pink-600);
+
+  --overlay-default: rgba(0, 0, 0, 0.2);
+  --overlay-strong: rgba(0, 0, 0, 0.4);
+
+  /* Misc */
+  --mode-break: var(--color-sky-600);
+  --surface-switch: var(--color-yellow-300);
+  --surface-switch-thumb: var(--color-neutral-0);
+}
+
+/* Permite dark: e light: usando o data-theme (em vez de prefers-color-scheme) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif; /* font-sans */
+
+  /* Background Global */
+  --color-background-global: var(--background-global); /* bg-background-global */
+
+  /* Surface */
+  --color-surface-subtle: var(--surface-subtle); /* bg-surface-subtle */
+  --color-surface-default: var(--surface-default); /* bg-surface-default */
+  --color-surface-strong: var(--surface-strong); /* bg-surface-strong */
+  --color-surface-brand: var(--surface-brand); /* bg-surface-brand */
+
+  /* Content */
+  --color-content-subtle: var(--content-subtle); /* text-content-subtle */
+  --color-content-default: var(--content-default); /* text-content-default */
+  --color-content-strong: var(--content-strong); /* text-content-strong */
+  --color-content-xstrong: var(--content-xstrong); /* text-content-xstrong */
+  --color-content-black: var(--color-neutral-900); /* text-content-black */
+  --color-content-white: var(--color-white-0); /* text-content-white */
+
+  /* Border */
+  --color-border-subtle: var(--border-subtle); /* border-border-subtle */
+  --color-border-default: var(--border-default); /* border-border-default */
+  --color-border-strong: var(--border-strong); /* border-border-strong */
+
+  /* Brand */
+  --color-brand-subtle: var(--brand-subtle); /* text-brand-subtle */
+  --color-brand-default: var(--brand-default); /* text-brand-default */
+  --color-brand-strong: var(--brand-strong); /* text-brand-strong */
+
+  /* Focus ring & overlay */
+  --color-focus-ring-default: var(--focus-ring-default); /* ring-focus-ring-default */
+  --color-focus-ring-strong: var(--focus-ring-strong); /* ring-focus-ring-strong */
+  --color-overlay-default: var(--overlay-default); /* bg-overlay-default */
+  --color-overlay-strong: var(--overlay-strong); /* bg-overlay-strong */
+
+  /* Misc */
+  --color-mode-break: var(--mode-break); /* text-mode-break */
+  --color-surface-switch: var(--surface-switch); /* bg-surface-switch */
+  --color-surface-switch-thumb: var(--surface-switch-thumb); /* bg-surface-switch-thumb */
+}
+
+@layer base {
+  body {
+    @apply bg-background-global text-content-xstrong;
+  }
 }

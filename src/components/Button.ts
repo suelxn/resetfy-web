@@ -1,32 +1,51 @@
-// Objetivo: Componente reutilizável de botão
-// - Reduz duplicação de código de estilização
-// - Aceita: texto, ID, variante (primary/secondary/danger), callback
+// Objetivo: Botão reutilizável com variantes
+// - Variantes: default (ação principal), secondary (ação de apoio), outline (contorno)
+// - Usa só as classes de cor e tipografia do styles/theme.css, então acompanha o tema
+
+import { createElement, type ReactElement } from 'react';
+
+export type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost' ;
+export type ButtonSize = 'sm' | 'md';
 
 export interface ButtonConfig {
   text: string;
   id: string;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
-export function createButton(config: ButtonConfig): HTMLButtonElement {
-  const button = document.createElement('button');
-  button.id = config.id;
-  button.textContent = config.text;
+const BASE_CLASSES =
+  'inline-flex cursor-pointer items-center justify-center rounded-lg font-bold transition ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-default ' +
+  'disabled:pointer-events-none disabled:opacity-50';
 
-  const baseClass = 'px-8 py-3 font-bold rounded-lg transition disabled:opacity-50';
+const VARIANT_CLASSES: Record<ButtonVariant, string> = {
+  default: 'bg-brand-default text-content-black hover:bg-brand-strong text-content-xstrong',
+  secondary: 'bg-surface-strong text-content-strong hover:bg-surface-strong/80',
+  outline: 'border border-border-default bg-surface-subtle text-content-default hover:bg-surface-strong hover:text-content-strong',
+  ghost: 'bg-brand-default/50 text-content-black hover:bg-brand-strong/80 text-content-xstrong'
+};
 
-  const variants = {
-    primary: 'bg-pink-500 text-white hover:bg-pink-600',
-    secondary: 'bg-gray-500 text-white hover:bg-gray-600',
-    danger: 'bg-gray-400 text-white hover:bg-gray-500',
-  };
+const SIZE_CLASSES: Record<ButtonSize, string> = {
+  sm: 'px-6 py-2',
+  md: 'px-8 py-2',
+};
 
-  button.className = `${baseClass} ${variants[config.variant || 'primary']}`;
-
-  if (config.onClick) {
-    button.addEventListener('click', config.onClick);
-  }
-
-  return button;
+export function createButton(config: ButtonConfig): ReactElement {
+  return createElement(
+    'button',
+    {
+      id: config.id,
+      disabled: config.disabled,
+      onClick: config.onClick,
+      className: [
+        BASE_CLASSES,
+        VARIANT_CLASSES[config.variant ?? 'default'],
+        SIZE_CLASSES[config.size ?? 'md'],
+      ].join(' '),
+    },
+    config.text,
+  );
 }
