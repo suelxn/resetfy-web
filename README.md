@@ -37,16 +37,16 @@ src/
 │   ├── logo-suelendias.svg  # Logo
 │   └── setting.svg          # Ícone de configurações
 ├── components/              # Componentes de interface
-│   ├── Badge.ts             # Badge reutilizável (ex.: ciclo atual)
-│   ├── Button.ts            # Botão com texto e variantes
-│   ├── Controls.ts          # Botões de controle (Iniciar, Pausar, Encerrar)
-│   ├── Header.ts            # Cabeçalho com logo, título e switch de tema
-│   ├── IconButton.ts        # Botão só com ícone (aceita apenas os ícones de assets/)
-│   ├── Layout.ts            # Container global da aplicação
-│   ├── ModeIndicator.ts     # Indicador de modo (Foco/Pausa)
-│   ├── SuggestionsModal.ts  # Modal com sugestões de exercício na pausa
-│   ├── Switch.ts            # Switch de tema claro/escuro (com estado)
-│   └── Timer.ts             # Display do cronômetro (MM:SS)
+│   ├── Badge.tsx             # Badge reutilizável (ex.: ciclo atual)
+│   ├── Button.tsx            # Botão com texto e variantes
+│   ├── Controls.tsx          # Botões de controle (Iniciar, Pausar, Encerrar)
+│   ├── Header.tsx            # Cabeçalho com logo, título e switch de tema
+│   ├── IconButton.tsx        # Botão só com ícone lucide (aceita apenas os ícones registrados)
+│   ├── Layout.tsx            # Container global da aplicação
+│   ├── ModeIndicator.tsx     # Indicador de modo (Foco/Pausa)
+│   ├── SuggestionsModal.tsx  # Modal com sugestões de exercício na pausa
+│   ├── Switch.tsx            # Switch de tema claro/escuro (com estado)
+│   └── Timer.tsx             # Display do cronômetro (MM:SS)
 ├── config/                  # Configurações e constantes
 │   ├── constants.ts         # Tempos (foco: 50min, pausa: 5min)
 │   └── suggestions.ts       # Lista de sugestões de exercícios
@@ -63,7 +63,7 @@ src/
 │   ├── formatTime.ts        # Converte segundos em MM:SS
 │   └── theme.ts             # Lê, salva e aplica o tema
 ├── vite-env.d.ts            # Tipos do Vite (imports de SVG)
-└── main.ts                  # Orquestrador: componente App e montagem na página
+└── main.tsx                  # Orquestrador: componente App e montagem na página
 ```
 
 

@@ -62,10 +62,20 @@
   --overlay-default: rgba(0, 0, 0, 0.5);
   --overlay-strong: rgba(0, 0, 0, 0.8);
 
-  /* Tokens específicos do Timer (Resetfy) mapeados no novo padrão */
+  /* Misc */
   --mode-break: var(--color-sky-300);
   --surface-switch: var(--color-sky-900);
   --surface-switch-thumb: var(--color-neutral-0);
+
+  /* Badge (ponto indicador de estado) */
+  --badge-dot-nao-iniciado: var(--color-green-500);
+  --badge-dot-foco: var(--brand-default);
+  --badge-dot-pausa: var(--color-yellow-300);
+  --badge-dot-interrompido: var(--color-red-500);
+
+  /* Danger (ações destrutivas) */
+  --danger-default: var(--color-red-500);
+  --danger-strong: var(--color-red-600);
 }
 
 /* Tema claro */
@@ -110,6 +120,16 @@
   --mode-break: var(--color-sky-600);
   --surface-switch: var(--color-yellow-300);
   --surface-switch-thumb: var(--color-neutral-0);
+
+  /* Badge (ponto indicador de estado) */
+  --badge-dot-nao-iniciado: var(--color-green-600);
+  --badge-dot-foco: var(--brand-default);
+  --badge-dot-pausa: var(--color-yellow-400);
+  --badge-dot-interrompido: var(--color-red-600);
+
+  /* Danger (ações destrutivas) */
+  --danger-default: var(--color-red-600);
+  --danger-strong: var(--color-red-700);
 }
 
 /* Permite dark: e light: usando o data-theme (em vez de prefers-color-scheme) */
@@ -155,6 +175,16 @@
   --color-mode-break: var(--mode-break); /* text-mode-break */
   --color-surface-switch: var(--surface-switch); /* bg-surface-switch */
   --color-surface-switch-thumb: var(--surface-switch-thumb); /* bg-surface-switch-thumb */
+
+  /* Badge (ponto indicador de estado) */
+  --color-badge-dot-nao-iniciado: var(--badge-dot-nao-iniciado); /* bg-badge-dot-nao-iniciado */
+  --color-badge-dot-foco: var(--badge-dot-foco); /* bg-badge-dot-foco */
+  --color-badge-dot-pausa: var(--badge-dot-pausa); /* bg-badge-dot-pausa */
+  --color-badge-dot-interrompido: var(--badge-dot-interrompido); /* bg-badge-dot-interrompido */
+
+  /* Danger */
+  --color-danger-default: var(--danger-default); /* bg-danger-default */
+  --color-danger-strong: var(--danger-strong); /* bg-danger-strong */
 }
 
 @layer base {
