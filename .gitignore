@@ -67,3 +67,4 @@ dist-ssr/
 *.local
 pnpm-workspace.yaml
 .history/
+dist-zip
