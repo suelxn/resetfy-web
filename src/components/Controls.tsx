@@ -26,20 +26,20 @@ export const Controls: FC<ControlsProps> = ({ status, onIniciar, onPausar, onEnc
       )}
       {status === 'foco' && (
         <>
-          <Button id="end-btn" text="ENCERRAR" variant="ghost" className="min-w-0 flex-1" onClick={onEncerrar} />
           <Button id="pause-btn" text="PAUSAR" variant="secondary" className="min-w-0 flex-1" onClick={onPausar} />
+          <Button id="end-btn" text="ENCERRAR" variant="danger" className="min-w-0 flex-1" onClick={onEncerrar} />
         </>
       )}
       {status === 'pausa' && (
         <>
-          <Button id="skip-btn" text="PULAR PAUSA" variant="secondary" className="min-w-0 flex-1" onClick={onPularPausa} />
-          <Button id="end-btn" text="ENCERRAR" variant="ghost" className="min-w-0 flex-1" onClick={onEncerrar} />
+          <Button id="skip-btn" text="PULAR PAUSA" variant="secondary" className="min-w-0 w-[calc(50%-0.75rem)] flex-none whitespace-nowrap px-2!" onClick={onPularPausa} />
+          <Button id="end-btn" text="ENCERRAR" variant="danger" className="min-w-0 flex-1" onClick={onEncerrar} />
         </>
       )}
       {status === 'interrompido' && (
         <>
           <Button id="continue-btn" text="CONTINUAR" className="min-w-0 flex-1" onClick={onIniciar} />
-          <Button id="end-btn" text="ENCERRAR" variant="ghost" className="min-w-0 flex-1" onClick={onEncerrar} />
+          <Button id="end-btn" text="ENCERRAR" variant="danger" className="min-w-0 flex-1" onClick={onEncerrar} />
         </>
       )}
     </div>

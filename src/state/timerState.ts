@@ -34,6 +34,7 @@ const STATUS_VALIDOS: StatusTimer[] = ['naoIniciado', 'foco', 'pausa', 'interrom
 // Momento (timestamp em ms) em que o ciclo atual termina. Só existe enquanto o timer está rodando
 let targetTime: number | null = null;
 let intervalId: number | null = null;
+let timeoutId: number | null = null;
 const subscribers: Set<(state: TimerState) => void> = new Set();
 
 // Segundos que faltam até o timestamp de término. Arredonda para cima para não mostrar 00:00 antes da hora
@@ -136,7 +137,27 @@ function parar() {
   targetTime = null;
   state.ativo = false;
   if (intervalId !== null) clearInterval(intervalId);
+  if (timeoutId !== null) clearTimeout(timeoutId);
   intervalId = null;
+  timeoutId = null;
+}
+
+// Liga o relógio. O setInterval atualiza o display; o setTimeout garante o fim no horário exato.
+// Em aba oculta o navegador limita setInterval (pode atrasar a conclusão e a notificação em até ~1 min),
+// mas não limita um setTimeout isolado com o prazo do ciclo
+function ligarRelogio() {
+  state.ativo = true;
+  intervalId = window.setInterval(atualizarPeloRelogio, 1000);
+  agendarFim();
+}
+
+function agendarFim() {
+  if (targetTime === null) return;
+
+  timeoutId = window.setTimeout(() => {
+    atualizarPeloRelogio();
+    agendarFim();
+  }, Math.max(0, targetTime - Date.now()));
 }
 
 // Registra um foco concluído no contador diário. Salvo no localStorage, zera na virada do dia
@@ -194,12 +215,10 @@ function atualizarPeloRelogio() {
 export function iniciar() {
   if (state.ativo) return;
   pedirPermissaoNotificacao();
-  state.ativo = true;
   state.status = state.modo === 'pausa' ? 'pausa' : 'foco';
   targetTime = Date.now() + state.tempoRestante * 1000;
 
-  intervalId = window.setInterval(atualizarPeloRelogio, 1000);
-
+  ligarRelogio();
   salvarTimer();
   notificar();
 }
@@ -282,7 +301,6 @@ document.addEventListener('visibilitychange', () => {
 
 // Restaura o cronômetro ao carregar o módulo, antes da primeira renderização
 if (targetTime !== null) {
-  state.ativo = true;
-  intervalId = window.setInterval(atualizarPeloRelogio, 1000);
+  ligarRelogio();
   atualizarPeloRelogio();
 }
