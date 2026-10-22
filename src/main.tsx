@@ -96,7 +96,7 @@ const App: FC = () => {
         <main className="flex flex-1 flex-col items-center justify-center gap-20">
           <div className="flex w-70 items-center justify-between">
             <ModeIndicator status={state.status} />
-            <Badge id="cycle-info" text={`Ciclo ${state.ciclo}`} />
+            <Badge id="cycle-info" text={`Ciclos hoje ${state.ciclosHoje}`} />
           </div>
           <Timer segundos={state.tempoRestante} />
           {emIntervalo && (

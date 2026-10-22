@@ -1,7 +1,8 @@
 // Objetivo: Definir tipos e interfaces da aplicação
 // - Modo: 'foco' ou 'pausa'
 // - StatusTimer: estado exibido no badge (naoIniciado, foco, pausa, interrompido)
-// - TimerState: estado do cronômetro (tempo, modo, ativo, status)
+// - TimerState: estado do cronômetro (tempo, modo, ativo, status, ciclos concluídos hoje)
+// - TimerSalvo: estado do cronômetro gravado no localStorage (resetfy_timer_state)
 // - Suggestion: sugestão de exercício
 
 export type Modo = 'foco' | 'pausa';
@@ -13,8 +14,16 @@ export interface TimerState {
   tempoTotal: number;
   modo: Modo;
   ativo: boolean;
-  ciclo: number;
+  ciclosHoje: number;
   status: StatusTimer;
+}
+
+export interface TimerSalvo {
+  targetTime: number | null;
+  remainingTime: number;
+  status: StatusTimer;
+  duration: number;
+  cycleType: Modo;
 }
 
 export interface Suggestion {

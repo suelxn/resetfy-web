@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RESETFY - Timer de Concentração</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Aplica o tema salvo antes da primeira pintura (evita flash). Mesma regra de src/utils/theme.ts -->
+    <!-- Aplica o tema salvo antes da primeira pintura (evita flash). Mesma regra de src/utils/armazenamento.ts -->
     <script>
       try {
-        document.documentElement.dataset.theme = localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+        var preferencias = JSON.parse(localStorage.getItem('resetfy_user_preferences'));
+        document.documentElement.dataset.theme = preferencias && preferencias.theme === 'light' ? 'light' : 'dark';
       } catch (e) {
         document.documentElement.dataset.theme = 'dark';
       }
