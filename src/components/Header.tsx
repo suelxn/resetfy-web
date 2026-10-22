@@ -12,7 +12,8 @@ interface HeaderProps {
   onAlternarConfiguracoes: () => void;
 }
 
-export const Header: FC<HeaderProps> = ({ title = 'RESETFY', logoUrl = '/favicon.svg', onAlternarConfiguracoes }) => {
+// BASE_URL inclui o base do Vite (ex.: /resetfy-web/ em prod); um caminho começando com "/" ignoraria o subcaminho
+export const Header: FC<HeaderProps> = ({ title = 'RESETFY', logoUrl = `${import.meta.env.BASE_URL}favicon.svg`, onAlternarConfiguracoes }) => {
   return (
     <header className="background-global h-16 border-b border-border-default/50">
       <div className="mx-auto flex h-full items-center justify-between px-4">
